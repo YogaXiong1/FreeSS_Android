@@ -1,2 +1,2 @@
 # Fress_Android
-Get free ss config from iShadow
+An Android App to get free ss config from iShadow. Commercial use is forbidden. Please use it with ShadowSocks.
