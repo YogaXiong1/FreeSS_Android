@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void failureCallBack(String result) {
             LogUtil.e("TAG", result);
+            Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -108,8 +110,10 @@ public class MainActivity extends AppCompatActivity {
                 LogUtil.e("LINK", selectedLadder.toSSLink());
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(ClipData.newPlainText(null, selectedLadder.toSSLink()));
+                Toast.makeText(MainActivity.this, " 已复制到剪切板", Toast.LENGTH_SHORT).show();
             } else {
-
+                //TODO: save QRCode pic
+                
             }
         }
     };

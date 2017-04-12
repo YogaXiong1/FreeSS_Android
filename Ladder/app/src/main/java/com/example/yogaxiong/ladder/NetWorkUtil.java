@@ -35,7 +35,7 @@ public class NetWorkUtil  {
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context);
         }
-        
+
         StringRequest request = new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
