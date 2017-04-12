@@ -4,8 +4,11 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView ladderListView;
     private LadderAdapter ladderAdapter;
     private List<Ladder> ladderList;
+    private Ladder selectedLadder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +86,31 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void failureCallBack(String result) {
+            LogUtil.e("TAG", result);
         }
     };
 
     private LadderAdapter.OnRecyclerViewItemClickListener itemClickListener = new LadderAdapter.OnRecyclerViewItemClickListener() {
         @Override
         public void onItemClick(View view, Ladder ladder) {
-            LogUtil.e("LINK", ladder.toSSLink());
-            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            cm.setPrimaryClip(ClipData.newPlainText(null, ladder.toSSLink()));
+            selectedLadder = ladder;
+            final String[] items = new String[]{"复制到剪切板", "保存二维码"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            AlertDialog dialog = builder.setTitle("选择功能").setItems(items, dialogClickListener).create();
+            dialog.show();
+        }
+    };
+
+    private DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (which == 0) {
+                LogUtil.e("LINK", selectedLadder.toSSLink());
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setPrimaryClip(ClipData.newPlainText(null, selectedLadder.toSSLink()));
+            } else {
+
+            }
         }
     };
 

@@ -1,5 +1,6 @@
 package com.example.yogaxiong.ladder;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.android.volley.RequestQueue;
@@ -28,9 +29,13 @@ public class NetWorkUtil  {
     }
 
     public void getResponse(Context context, String url, final CallBack callBack) {
-        mContext = context;
-        requestQueue = Volley.newRequestQueue(context);
-
+        if (context == null) {
+            mContext = context;
+        }
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
+        
         StringRequest request = new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
