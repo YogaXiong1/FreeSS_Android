@@ -14,9 +14,13 @@ import java.util.List;
  */
 
 
-public class LadderAdapter extends RecyclerView.Adapter<LadderAdapter.LadderViewHolder> {
+public class LadderAdapter extends RecyclerView.Adapter<LadderAdapter.LadderViewHolder> implements View.OnClickListener {
     private Context mContext;
     private List<Ladder> ladders;
+    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+    public static interface OnRecyclerViewItemClickListener {
+        void onItemClick(View view , Ladder data);
+    }
 
     public LadderAdapter(Context mContext, List<Ladder> ladders) {
         super();
@@ -35,9 +39,9 @@ public class LadderAdapter extends RecyclerView.Adapter<LadderAdapter.LadderView
 
     @Override
     public LadderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LadderViewHolder holder = new LadderViewHolder(LayoutInflater.from(
-                mContext).inflate(R.layout.ladder_list_item, parent,
-                false));
+        View view = LayoutInflater.from(mContext).inflate(R.layout.ladder_list_item, parent, false);
+        LadderViewHolder holder = new LadderViewHolder(view);
+        view.setOnClickListener(this);
         return holder;
     }
 
@@ -48,6 +52,8 @@ public class LadderAdapter extends RecyclerView.Adapter<LadderAdapter.LadderView
         holder.portTextView.setText(ladder.getPortText());
         holder.passwordTextView.setText(ladder.getPasswordText());
         holder.encryptionTextView.setText(ladder.getEncriptionText());
+
+        holder.itemView.setTag(ladder);
     }
 
     class LadderViewHolder extends RecyclerView.ViewHolder {
@@ -64,5 +70,18 @@ public class LadderAdapter extends RecyclerView.Adapter<LadderAdapter.LadderView
             encryptionTextView = (TextView) view.findViewById(R.id.tv_encryption);
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        if (mOnItemClickListener != null) {
+            mOnItemClickListener.onItemClick(v, (Ladder)v.getTag());
+        }
+    }
+
+    public void setmOnItemClickListener(OnRecyclerViewItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+
 
 }

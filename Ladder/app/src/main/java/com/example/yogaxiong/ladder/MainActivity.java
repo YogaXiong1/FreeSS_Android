@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         ladderListView.setAdapter(ladderAdapter);
         ladderListView.setLayoutManager(new LinearLayoutManager(this));
 
-//        ladderListView.setOnItemClickListener(itemClickListener);
+        ladderAdapter.setmOnItemClickListener(itemClickListener);
     }
 
     private void loadData() {
@@ -85,13 +85,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+    private LadderAdapter.OnRecyclerViewItemClickListener itemClickListener = new LadderAdapter.OnRecyclerViewItemClickListener() {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Ladder ladder = ladderList.get(position);
+        public void onItemClick(View view, Ladder ladder) {
             LogUtil.e("LINK", ladder.toSSLink());
             ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setPrimaryClip(ClipData.newPlainText(null, ladder.toSSLink()));
         }
     };
+
+
 }
