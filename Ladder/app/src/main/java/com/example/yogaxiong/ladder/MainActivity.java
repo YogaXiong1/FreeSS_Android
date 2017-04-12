@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, " 已复制到剪切板", Toast.LENGTH_SHORT).show();
             } else {
                 //TODO: save QRCode pic
-                
+
             }
         }
     };
