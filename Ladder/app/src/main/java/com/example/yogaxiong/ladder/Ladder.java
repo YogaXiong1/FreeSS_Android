@@ -1,5 +1,9 @@
 package com.example.yogaxiong.ladder;
 
+import android.util.Base64;
+
+import java.net.URL;
+
 /**
  * Created by YogaXiong on 2017/4/8.
  */
@@ -68,10 +72,18 @@ public class Ladder {
     }
 
     public String getPasswordText() {
-        return "port: " + getPassword();
+        return "password: " + getPassword();
     }
 
     public String getEncriptionText() {
         return "encryption: " + getEncription();
+    }
+
+    public String toSSLink() {
+        //        服务器:端口:协议:加密方式:混淆方式:base64（密码）？obfsparam= Base64(混淆参数)&remarks=Base64(备注)
+        String parts = this.getEncription() + ":" + this.getPassword() + "@" + this.getIp() + ":" + this.getPort();
+
+        String link = "ss://" + Base64.encodeToString(parts.getBytes(), Base64.DEFAULT);
+        return link;
     }
 }

@@ -16,7 +16,7 @@ public class Creater {
         return shared;
     }
 
-    public List<Ladder> create(String source) {
+    public List<Ladder> createLadders(String source) {
 
         List<Ladder> rs = new ArrayList<>();
 
@@ -48,4 +48,5 @@ public class Creater {
         }
         return rs;
     }
+
 }

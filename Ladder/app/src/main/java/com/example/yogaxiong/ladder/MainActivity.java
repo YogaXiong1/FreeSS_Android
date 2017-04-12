@@ -1,21 +1,26 @@
 package com.example.yogaxiong.ladder;
 
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ListView ladderListView;
+    private RecyclerView ladderListView;
     private LadderAdapter ladderAdapter;
     private List<Ladder> ladderList;
 
@@ -23,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         config();
-        configView();
     }
 
     @Override
@@ -42,11 +46,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void config() {
-        ladderList = new ArrayList<Ladder>();
-        ladderAdapter = new LadderAdapter(MainActivity.this, ladderList);
-    }
-
-    private void configView() {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,8 +58,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ladderListView = (ListView) findViewById(R.id.ladder_list_view);
+        ladderList = new ArrayList<Ladder>();
+        ladderAdapter = new LadderAdapter(MainActivity.this, ladderList);
+
+        ladderListView = (RecyclerView) findViewById(R.id.ladder_list_view);
         ladderListView.setAdapter(ladderAdapter);
+        ladderListView.setLayoutManager(new LinearLayoutManager(this));
+
+//        ladderListView.setOnItemClickListener(itemClickListener);
     }
 
     private void loadData() {
@@ -70,14 +75,23 @@ public class MainActivity extends AppCompatActivity {
     private NetWorkUtil.CallBack callBack = new NetWorkUtil.CallBack() {
         @Override
         public void successCallBack(String result) {
-            ladderList = Creater.getInstance().create(result);
+            ladderList = Creater.getInstance().createLadders(result);
             ladderAdapter.setLadders(ladderList);
             ladderAdapter.notifyDataSetChanged();
         }
 
         @Override
         public void failureCallBack(String result) {
+        }
+    };
 
+    private AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Ladder ladder = ladderList.get(position);
+            LogUtil.e("LINK", ladder.toSSLink());
+            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(ClipData.newPlainText(null, ladder.toSSLink()));
         }
     };
 }

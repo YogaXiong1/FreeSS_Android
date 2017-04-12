@@ -1,13 +1,11 @@
 package com.example.yogaxiong.ladder;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
  */
 
 
-public class LadderAdapter extends BaseAdapter {
+public class LadderAdapter extends RecyclerView.Adapter<LadderAdapter.LadderViewHolder> {
     private Context mContext;
     private List<Ladder> ladders;
 
@@ -31,50 +29,40 @@ public class LadderAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return ladders.get(position);
+    public int getItemCount() {
+        return ladders.size();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.ladder_list_item, parent, false);
-            holder.ipTextView = (TextView) convertView.findViewById(R.id.tv_ip);
-            holder.portTextView = (TextView) convertView.findViewById(R.id.tv_port);
-            holder.passwordTextView = (TextView) convertView.findViewById(R.id.tv_password);
-            holder.encryptionTextView = (TextView) convertView.findViewById(R.id.tv_encryption);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+    public LadderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LadderViewHolder holder = new LadderViewHolder(LayoutInflater.from(
+                mContext).inflate(R.layout.ladder_list_item, parent,
+                false));
+        return holder;
+    }
 
+    @Override
+    public void onBindViewHolder(LadderViewHolder holder, int position) {
         Ladder ladder = ladders.get(position);
         holder.ipTextView.setText(ladder.getIpText());
         holder.portTextView.setText(ladder.getPortText());
         holder.passwordTextView.setText(ladder.getPasswordText());
         holder.encryptionTextView.setText(ladder.getEncriptionText());
-        return convertView;
     }
 
-    @Override
-    public int getCount() {
-        return ladders.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    static class ViewHolder {
+    class LadderViewHolder extends RecyclerView.ViewHolder {
         public TextView ipTextView;
         public TextView portTextView;
         public TextView passwordTextView;
         public TextView encryptionTextView;
+
+        public LadderViewHolder(View view) {
+            super(view);
+            ipTextView = (TextView) view.findViewById(R.id.tv_ip);
+            portTextView = (TextView) view.findViewById(R.id.tv_port);
+            passwordTextView = (TextView) view.findViewById(R.id.tv_password);
+            encryptionTextView = (TextView) view.findViewById(R.id.tv_encryption);
+        }
     }
 
 }
-
-
