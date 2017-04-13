@@ -5,5 +5,5 @@ package com.example.yogaxiong.ladder;
  */
 
 public class Config {
-    static final String url = "http://xyz.ishadow.online/";
+    static String url = "http://free.ishadow.online/";
 }
